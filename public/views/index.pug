@@ -1,0 +1,15 @@
+extends layout
+block content
+  .row.text-center 
+    .col-md-9.text-center
+      h1 Here is your ToDo List:
+      ul
+        for item in list_items
+          li= item.list_items
+  .row.text-center
+    form(action='/lists', method='POST', id= 'form')
+      div.form-group
+        label(for='item-to-add') Item To Add:
+        input(name='list_item', type='text', value='', id='list_item')
+      input(value='Submit', type='submit')
+    
