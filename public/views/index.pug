@@ -5,7 +5,7 @@ block content
       h1 Here is your ToDo List:
       ul
         for item in list_items
-          li= item.list_items
+          li(id=item.id)= item.list_item
   .row.text-center
     form(action='/lists', method='POST', id= 'form')
       div.form-group
