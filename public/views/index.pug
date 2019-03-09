@@ -1,15 +1,30 @@
 extends layout
 block content
-  .row.text-center 
-    .col-md-9.text-center
-      h1 Here is your ToDo List:
-      ul
+  .row(style="height:52px") 
+    div(class="alert alert-danger" role="alert" style="display: none" )
+
+  .row 
+    .col-md-9
+      h1 TODO LIST:
+      ol(class="list-group mx-auto" style="width: 300px")
         for item in list_items
-          li(id=item.id)= item.list_item
-  .row.text-center
-    form(action='/lists', method='POST', id= 'form')
-      div.form-group
-        label(for='item-to-add') Item To Add:
-        input(name='list_item', type='text', value='', id='list_item')
-      input(value='Submit', type='submit')
-    
+          li(id=item.id class="list-group-item d-flex justify-content-between align-items-center")
+            i(class="far fa-trash-alt" style="color: Tomato" id="delete")
+            i(class="far fa-edit" style="color: Mediumslateblue" id="update") 
+            =item.list_item 
+        li(class="list-group-item d-flex justify-content-between align-items-center")
+          form(action='/lists', method='POST', id= 'form')
+            div.form-group
+              label(for='item-to-add')
+              input(name='list_item', type='text', value='', placeholder='Type Here to Add...' id='list_item')
+              input(value='Add to List', type='submit')
+
+            
+  //- .row.text-center
+  //-   form(action='/lists', method='POST', id= 'form')
+  //-     div.form-group
+  //-       label(for='item-to-add') Item To Add:
+  //-       |  
+  //-       input(name='list_item', type='text', value='', id='list_item')
+  //-     input(value='Add to List', type='submit')
+  
