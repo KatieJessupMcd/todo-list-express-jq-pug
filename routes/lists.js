@@ -8,7 +8,6 @@ const db = require('../db');
 
 // Route to get all list items
 router.get('/', async function(req, res, next) {
-  // console.log('we made it inside the get request!');
   try {
     let list_items = await List.getAllListItems();
     return res.render('index', { list_items: list_items });
@@ -22,28 +21,37 @@ router.get('/', async function(req, res, next) {
 router.post('/', async function(req, res, next) {
   try {
     let new_list = await List.create(req.body);
-    console.log('THIS IS NEW_LIST IN POST ', new_list);
     // API returns JSON for JQuery to update DOM
     return res.json({ new_list });
-    // let result = res.json({ new_list });
-    // console.log(
-    //   'this is the result for the POST req WITH list_item',
-    //   result['new_list']['list_item']
-    // );
-    // return result;
-    // return res.render('index', {});
   } catch (error) {
     error.status = 409;
     return next(error);
   }
 });
 
-// This route should remove a list item by the id provided.
+// This route should update a single list item by the id provided.
+// It should return a JSON of {list: listData}
+router.patch('/', async function(req, res, next) {
+  const { id, list_item } = req.body;
+
+  try {
+    const list = await List.update({
+      id,
+      list_item
+    });
+    return res.json({ list, message: 'List item updated' });
+  } catch (err) {
+    err.status = 404;
+    return next(err);
+  }
+});
+
+// This route should remove a list item by the id provided(passed in by ajax req body in json form).
 // Should return a JSON of {message: "List item deleted"}
 router.delete('/', async function(req, res, next) {
   try {
     await List.delete(req.body.id);
-    return res.json({ message: 'List item deleted' });
+    return res.json({ message: 'List item deleted', id: req.body.id });
   } catch (err) {
     err.status = 404;
     return next(err);
